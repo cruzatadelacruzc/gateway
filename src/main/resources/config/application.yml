@@ -7,20 +7,28 @@
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
 eureka:
+  client:
+    instance-info-replication-interval-seconds: 10
+    registry-fetch-interval-seconds: 10
   instance:
+    appname: gateway
     prefer-ip-address: true
+    instance-id: gateway:${spring.application.instance-id:${random.value}}
+    status-page-url-path: ${management.endpoints.web.base-path}/info
+    health-check-url-path: ${management.endpoints.web.base-path}/health
+    lease-renewal-interval-in-seconds: 5
+    lease-expiration-duration-in-seconds: 10
     metadata-map:
       profile: ${spring.profiles.active}
       version: #project.version#
       git-version: ${git.commit.id.describe:}
       git-commit: ${git.commit.id.abbrev:}
       git-branch: ${git.branch:}
-  client:
-    region: default
 
 management:
   endpoints:
     web:
+      base-path: /management
       exposure:
         include: ['refresh', 'health', 'info']
   info:
@@ -33,4 +41,43 @@ management:
 spring:
   application:
     name: gateway
+  messages:
+    basename: i18n/messages
+zuul:
+  sensitive-headers: Cookie,Set-Cookie #see https://github.com/spring-cloud/spring-cloud-netflix/issues/3126
+  host:
+    max-total-connections: 1000
+    max-per-route-connections: 100
+    connect-timeout-millis: 5000
+    socket-timeout-millis: 60000
+  prefix: /services
+  semaphore:
+    max-semaphores: 500
 
+# See https://github.com/Netflix/Hystrix/wiki/Configuration
+hystrix:
+  command:
+    default:
+      execution:
+        isolation:
+          thread:
+             timeoutInMilliseconds: 60000
+
+# Properties to be exposed on the /info management endpoint
+info:
+  # Comma separated list of profiles that will trigger the ribbon to show
+  display-ribbon-on-profiles: 'dev'
+
+# ===================================================================
+# App specific properties
+# ===================================================================
+application:
+  clientApp:
+    name: 'gatewayApp'
+  # cors:
+  #     allowed-origins: "*"
+  #     allowed-methods: "*"
+  #     allowed-headers: "*"
+  #     exposed-headers: "Authorization,Link,X-Total-Count"
+  #     allow-credentials: true
+  #     max-age: 1800

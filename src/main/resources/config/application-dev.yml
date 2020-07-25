@@ -12,14 +12,59 @@
 # Full reference is available at:
 # http://docs.spring.io/spring-boot/docs/current/reference/html/common-application-properties.html
 # ===================================================================
+logging:
+  level:
+    com.example.gateway: debug
+
 eureka:
   client:
     service-url:
-      defaultZone: http://localhost:8761/eureka/
+      defaultZone: http://admin:eureka@localhost:8761/eureka/
 
 spring:
   profiles:
     active: dev
+  devtools:
+    restart:
+      enabled: true
+    add-properties: false
 server:
   port: 8080
-
+# ===================================================================
+# App specific properties
+# ===================================================================
+application:
+  cache: # Cache configuration
+    time-to-live-seconds: 3600
+    backup-count: 1
+    management-center: # Full reference is available at: http://docs.hazelcast.org/docs/management-center/3.9/manual/html/Deploying_and_Starting.html
+      enabled: false
+      update-interval: 3
+      url: http://localhost:8180/hazelcast-mancenter
+  security:
+    client-authorization:
+      access-token-uri: http://uaa/oauth/token
+      token-service-id: uaa
+      client-id: internal
+      client-secret: internal
+  gateway:
+    rate-limiting:
+      enabled: false
+      limit: 100000
+      duration-in-seconds: 3600
+    authorized-microservices-endpoints: # Access Control Policy, if left empty for a route, all endpoints will be accessible
+      sportdata: /v2/api-docs # recommended dev configuration
+  signature-verification:
+    public-key-endpoint-uri: http://uaa/oauth/token_key
+    #ttl for public keys to verify JWT tokens (in ms)
+    ttl: 3600000
+    #max. rate at which public keys will be fetched (in ms)
+    public-key-refresh-rate-limit: 10000
+  web-client-configuration:
+    #change client secret in production, keep in sync with UAA configuration
+    client-id: web_app
+    secret: changeit
+    # Controls session expiration due to inactivity (ignored for remember-me).
+    # Negative values disable session inactivity expiration.
+    session-timeout-in-seconds: 1800
+    #domain-cookie:
