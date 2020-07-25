@@ -19,6 +19,7 @@ public class AppProperties {
     private final Cache cache = new Cache();
     private Security security = new Security();
     private final Gateway gateway = new Gateway();
+    private final Register register = new Register();
     private final ClientApp clientApp = new ClientApp();
     private final CorsConfiguration cors = new CorsConfiguration();
     private final SignatureVerification signatureVerification = new SignatureVerification();
@@ -77,6 +78,15 @@ public class AppProperties {
                 this.durationInSeconds = durationInSeconds;
                 return this;
             }
+        }
+    }
+    @Getter
+    public static class Register{
+        private String discoveryUrl = "http://admin:eureka@localhost:8761/eureka/";
+
+        public Register setDiscoveryUrl(String discoveryUrl) {
+            this.discoveryUrl = discoveryUrl;
+            return this;
         }
     }
     @Getter
