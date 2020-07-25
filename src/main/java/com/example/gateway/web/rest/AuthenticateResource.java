@@ -28,8 +28,8 @@ public class AuthenticateResource {
     /**
      * Authenticates a user setting the access and refresh token cookies.
      *
-     * @param loginVM object that store a user's credentials.
-     * @param request the {@link HttpServletRequest} holding - among others - the headers passed from the client.
+     * @param loginVM  object that store a user's credentials.
+     * @param request  the {@link HttpServletRequest} holding - among others - the headers passed from the client.
      * @param response the {@link HttpServletResponse} getting the cookies set upon successful authentication.
      * @return the {@link ResponseEntity} with status {@code 200 (OK)} and with body the access token
      * of the authenticated user, or with status with status {@code 400 (Bad Request)} if it fails to authenticate the user.
@@ -38,6 +38,7 @@ public class AuthenticateResource {
             produces = MediaType.APPLICATION_JSON_VALUE)
     public ResponseEntity<OAuth2AccessToken> authorize(@Valid @RequestBody LoginVM loginVM,
                                                        HttpServletRequest request, HttpServletResponse response) {
+        log.debug("REST request to authenticate user: {}", loginVM);
         OAuth2AccessToken accessToken = authenticationService.authenticate(loginVM, request, response);
         return ResponseEntity.ok(accessToken);
     }
@@ -45,14 +46,14 @@ public class AuthenticateResource {
     /**
      * {@code POST /logout} : Logout current user deleting his cookies.
      *
-     * @param request the {@link HttpServletRequest} holding - among others - the headers passed from the client.
+     * @param request  the {@link HttpServletRequest} holding - among others - the headers passed from the client.
      * @param response response the {@link HttpServletResponse} getting the cookies set upon successful authentication.
      * @return the {@link ResponseEntity} with status {@code 204 (Not Content)}.
      */
     @PostMapping("/logout")
     public ResponseEntity<?> logout(HttpServletRequest request, HttpServletResponse response) {
         log.debug("logging out user {}", SecurityContextHolder.getContext().getAuthentication().getName());
-        authenticationService.logout(request,response);
+        authenticationService.logout(request, response);
         return ResponseEntity.noContent().build();
     }
 }
