@@ -11,13 +11,14 @@
     <groupId>com.example</groupId>
     <artifactId>gateway</artifactId>
     <version>0.0.1-SNAPSHOT</version>
-    <name>gateway</name>
+    <name>Gateway</name>
     <description>Demo project for Spring Boot</description>
 
     <properties>
         <java.version>1.8</java.version>
         <hazelcast.version>3.12.7</hazelcast.version>
         <org.zalando.version>0.25.0</org.zalando.version>
+        <jaxb-runtime.version>2.3.2</jaxb-runtime.version>
         <spring-cloud.version>Hoxton.SR4</spring-cloud.version>
         <archunit-junit5.version>0.12.0</archunit-junit5.version>
         <git-commit-id-plugin.version>4.0.0</git-commit-id-plugin.version>
@@ -79,6 +80,11 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-configuration-processor</artifactId>
             <scope>provided</scope>
+        </dependency>
+        <dependency>
+            <groupId>org.glassfish.jaxb</groupId>
+            <artifactId>jaxb-runtime</artifactId>
+            <version>${jaxb-runtime.version}</version>
         </dependency>
 
         <!--Spring Cloud dependencies-->
