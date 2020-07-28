@@ -5,8 +5,6 @@
 spring:
   application:
     name: gateway
-  profiles:
-    active: ${spring.profiles.active}
   cloud:
     config:
       uri: http://admin:config@localhost:8081/config
