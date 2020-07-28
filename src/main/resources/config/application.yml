@@ -19,6 +19,7 @@ eureka:
     lease-renewal-interval-in-seconds: 5
     lease-expiration-duration-in-seconds: 10
     metadata-map:
+      zone: primary # This is needed for the load balancer
       profile: ${spring.profiles.active}
       version: #project.version#
       git-version: ${git.commit.id.describe:}
