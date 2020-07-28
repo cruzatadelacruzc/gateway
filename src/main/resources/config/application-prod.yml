@@ -14,7 +14,7 @@
 # ===================================================================
 logging:
   level:
-    ROOT: debug
+    ROOT: INFO
     com.example.gateway: debug
 
 eureka:
