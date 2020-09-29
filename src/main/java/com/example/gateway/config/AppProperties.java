@@ -9,7 +9,7 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 /**
- * Properties specific to gateway.
+ * Properties specific to Gateway.
  * <p>
  * Properties are configured in the {@code application.yml} file.
  */
@@ -19,9 +19,9 @@ public class AppProperties {
     private final Cache cache = new Cache();
     private Security security = new Security();
     private final Gateway gateway = new Gateway();
-    private final Register register = new Register();
     private final ClientApp clientApp = new ClientApp();
     private final CorsConfiguration cors = new CorsConfiguration();
+    private final RegistryConfig registryConfig = new RegistryConfig();
     private final SignatureVerification signatureVerification = new SignatureVerification();
     private final WebClientConfiguration webClientConfiguration = new WebClientConfiguration();
 
@@ -81,15 +81,6 @@ public class AppProperties {
         }
     }
     @Getter
-    public static class Register{
-        private String discoveryUrl = "http://admin:eureka@localhost:8761/eureka/";
-
-        public Register setDiscoveryUrl(String discoveryUrl) {
-            this.discoveryUrl = discoveryUrl;
-            return this;
-        }
-    }
-    @Getter
     public static class Security {
 
         private final ClientAuthorization clientAuthorization = new ClientAuthorization();
@@ -112,6 +103,15 @@ public class AppProperties {
 
         public ClientApp setName(String name) {
             this.name = name;
+            return this;
+        }
+    }
+    @Getter
+    public static class RegistryConfig {
+        private String password;
+
+        public RegistryConfig setPassword(String password) {
+            this.password = password;
             return this;
         }
     }

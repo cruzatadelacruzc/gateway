@@ -24,6 +24,8 @@ public class OAuth2JwtAccessTokenConverter extends JwtAccessTokenConverter {
                                          OAuth2SignatureVerifierClient signatureVerifierClient) {
         this.properties = properties;
         this.oAuth2SignatureVerifierClient = signatureVerifierClient;
+        // NOTE, it is very important to try fetch for the public key to verify the JWT signature
+        tryCreateSignatureVerifier();
     }
 
     /**
@@ -72,6 +74,7 @@ public class OAuth2JwtAccessTokenConverter extends JwtAccessTokenConverter {
             if (verifier != null) {
                 lastKeyFetchTimestamp = time;
                 setVerifier(verifier);
+                log.debug("Public key retrieved from OAuth2 server to create SignatureVerifier");
                 return true;
             }
         } catch (Exception e) {

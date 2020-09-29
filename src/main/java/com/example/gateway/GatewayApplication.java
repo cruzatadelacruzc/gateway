@@ -2,8 +2,7 @@ package com.example.gateway;
 
 import com.example.gateway.config.AppProperties;
 import com.example.gateway.config.Constants;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -20,14 +19,12 @@ import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
 
-@EnableConfigurationProperties(value = {AppProperties.class})
-@SpringBootApplication
+@Slf4j
 @EnableZuulProxy
+@SpringBootApplication
 @EnableDiscoveryClient
+@EnableConfigurationProperties(value = {AppProperties.class})
 public class GatewayApplication implements InitializingBean {
-
-	private static final Logger log = LoggerFactory.getLogger(GatewayApplication.class);
-
 
 	private final Environment env;
 
@@ -97,5 +94,11 @@ public class GatewayApplication implements InitializingBean {
 				serverPort,
 				contextPath,
 				env.getActiveProfiles());
+		String configServerStatus = env.getProperty("configserver.status");
+		if (configServerStatus == null) {
+			configServerStatus = "Not found or not setup for this application";
+		}
+		log.info("\n----------------------------------------------------------\n\t" +
+				"Config Server: \t{}\n----------------------------------------------------------", configServerStatus);
 	}
 }

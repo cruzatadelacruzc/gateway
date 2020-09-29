@@ -7,8 +7,12 @@ spring:
     name: gateway
   cloud:
     config:
-      uri: http://admin:config@localhost:8081/config
+      uri: http://admin:registry-config@localhost:8761/config
       label: master # toggle to switch to a different version of the configuration as stored in git
       # it can be set to any label, branch or commit of the configuration source Git repository
       profile: dev # profile(s) of the property source
       name: gateway
+
+application:
+  registry-config:
+    password: registry-config

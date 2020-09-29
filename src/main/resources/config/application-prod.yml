@@ -22,7 +22,7 @@ eureka:
     hostname: ${DOMAIN_NAME:localhost}
   client:
     service-url:
-      defaultZone: ${application.register.discovery-url}/eureka/
+      defaultZone: http://admin:${application.registry-config.password}@${eureka.instance.hostname}:${server.port}/eureka/
 spring:
   devtools:
     restart:
@@ -39,8 +39,6 @@ server:
 # App specific properties
 # ===================================================================
 application:
-  register:
-    discovery-url: http://admin:eureka@localhost:8761
   security:
     client-authorization:
       access-token-uri: http://uaa/oauth/token
